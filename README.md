@@ -1,2 +1,2 @@
-# property-calculator
-Home/Property purchase affordabilty calculator (South Africa version)
+# Property Affordability Calculator
+Home/Property affordabilty calculator (South Africa version)
