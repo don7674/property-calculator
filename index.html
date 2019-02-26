@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+<title>Property Affordability Calculator</title>
+    
+<meta name="keywords" content="south africa, home affordability calculator, property affordabilty calculator, mortgage calculator, bond calculator" />
+    
+<style type="text/css">
+
+    body {
+        background: white url("images/graybrck.jpg");
+        font-family: "Helvetica";
+        color: navy;
+        font-size: 100%;
+    }
+    
+    table#main {
+        border: 2px solid grey;
+        border-collapse: collapse;
+    }
+    
+    th {
+        background: navy;
+        color: white;
+        border: 4px solid navy;
+        margin-left: 5px;
+        width: 25%;
+    }
+    
+    td {
+        border: 4px solid grey;
+        padding: 5px;
+        width: 25%;
+    }
+    
+    td#grey {
+        border-color: grey;
+    }
+    
+    button{
+        font-size: 16px;    
+    }
+        
+    input#grey {
+        background-color: lightgray;
+    }
+    
+    input#pink {
+        background-color: lightpink;
+    }
+    
+    input#green {
+        background-color: chartreuse;
+    }
+    
+    input#yellow {
+        background-color: yellow;
+    }
+    
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }    
+    
+</style>
+
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="home_afford.js"></script>
+
+</head>
+    
+<body>
+
+<h1 style="text-align: left">Property Affordability Calculator</h1>
+<h3 style="text-align: left; color: brown">(Applicable to South Africa - effective June 2018 - 2019)</h3>
+    
+<form name="formdata" >
+    
+    <div id="input" >
+        <table id="main" width="90%">
+        <tr>
+            <th>Available Funding</th><th>Transfer Costs</th><th>Bond Registration Costs</th><th>Total</th>
+        </tr>
+        <tr>    
+        <td>
+            <p><label class="question" for="cash_amnt">Cash Amount</label>
+                <input type="text" id="cash_amnt" name="cashAmount" placeholder="0.00"
+                  size="10" />
+            </p>
+            <p><label class="question" for="bond_amnt">Bond Amount</label>
+                <input type="text" id="bond_amnt" name="bondAmount" placeholder="0.00"
+                  size="10" />
+            </p>
+            <input type="button" value="Apply" onclick="applyButtonCallback();" />
+        </td>
+
+        <td id="grey">
+            <p><label for="convey_fee">Convey Fee (incl VAT)</label>
+                <input type="text" id="grey" name="conveyFee" placeholder="0.00" size="10"/>            
+            </p>
+            <p><label for="transfer_duty">Transfer Duty</label>
+                <input type="text" id="grey" name="transferDuty" placeholder="0.00" size="10"/>
+            </p>
+            <p><label for="do_levy">Deeds Office Levy</label>
+                <input type="text" id="grey" name="doLevy" placeholder="0.00" size="10"/>            
+            </p>
+            <p><label for="petties">Post &amp Petties</label>
+                <input type="text" name="transferPetties" placeholder="0.00" size="10"/>            
+            </p>            
+        </td>
+
+        <td>
+            <p><label for="bond_convey">Convey Fee (incl VAT)</label>
+                <input type="text" id="grey" name="bondConveyFee" placeholder="0.00" size="10"/>            
+            </p>
+            <p><label for="bond_do">Deeds Office Fee</label>
+                <input type="text" id="grey" name="doBondFee" placeholder="0.00" size="10"readonly/>
+            </p>            
+            <p><label for="bond_init">Bond Initiation Fee</label>
+                <input type="text" id="bond_init" name="initBondFee" placeholder="0.00" size="10"/>
+                <label>(specify amount)</label>
+            </p>
+            <p><label for="petties">Post &amp Petties</label>
+                <input type="text" name="bondPetties" placeholder="0.00" size="10"/>            
+            </p>            
+        </td>
+        <td>
+            <p><label for="total">Total amount (incl VAT)</label>
+                <input type="text" id="pink" name="total" placeholder="0.00" size="10"readonly/>     
+            </p>
+        </td>
+        </tr>
+        </table>
+    </div>
+    
+    <div id="buttons">
+      <input type="button" class="button" value="Calculate" onclick="calculate();" />
+      <input type="reset" class="button" value="Reset" />
+    </div>
+    
+    <h3 style="color: green; text-align: center">This is what you could afford within available funding</h3>
+    
+    <div id="calculated">
+        <table id="main" width="90%">
+        <tr>
+            <th>Affordable Funding</th><th>Transfer Costs</th><th>Bond Registration Costs</th><th>Total</th>
+        <tr>
+        <td>
+            <p><label class="question" for="calc_cash_amnt">Cash Amount</label>
+                <input type="text" id="grey" name="calcCashAmount" placeholder="0.00"
+                  size="10" readonly />
+            </p>
+            <p><label class="question" for="calc_bond_amnt">Bond Amount</label>
+                <input type="text" id="grey" name="calcBondAmount" placeholder="0.00"
+                  size="10" readonly />
+            </p>
+            <p><label class="question" for="calc_offer_amnt"><strong><i>Offer Amount</i></strong></label>
+                <input type="text" id="green" name="calcOfferAmount" placeholder="0.00"
+                  size="10" readonly />
+            </p>
+        </td>
+        <td>
+            <p><label for="calc_convey_fee">Convey Fee (incl VAT)</label>
+                <input type="text" id="grey" name="calcConveyFee" placeholder="0.00" size="10"readonly/>            
+            </p>
+            <p><label for="calc_transfer_duty">Transfer Duty</label>
+                <input type="text" id="grey" name="calcTransferDuty" placeholder="0.00" size="10"readonly/>
+            </p>
+            <p><label for="calc_do_levy">Deeds Office Levy</label>
+                <input type="text" id="grey" name="calcDoLevy" placeholder="0.00" size="10" readonly/>            
+            </p>
+            <p><label for="petties">Post &amp Petties</label>
+                <input type="text" id="grey" name="calcTransferPetties" placeholder="0.00" size="10" readonly/>            
+            </p>            
+        </td>
+        <td>
+            <p><label for="calc_bond_convey">Convey Fee (incl VAT)</label>
+                <input type="text" id="grey" name="calcBondConveyFee" placeholder="0.00" size="10"readonly/>            
+            </p>
+            <p><label for="calc_bond_do">Deeds Office Fee</label>
+                <input type="text" id="grey" name="calcDoBondFee" placeholder="0.00" size="10"readonly/>
+            </p>
+            <p><label for="calc_bond_init">Bond Initiation Fee</label>
+                <input type="text" id="grey" name="calcInitBondFee" placeholder="0.00" size="10"readonly/>
+            </p>
+            <p><label for="petties">Post &amp Petties</label>
+                <input type="text" id="grey" name="calcBondPetties" placeholder="0.00" size="10" readonly/>            
+            </p>            
+        </td>
+        <td>
+            <p><label for="calc_total">Total amount (incl VAT)</label>
+                <input id="yellow" type="text" name="calcTotal" placeholder="0.00" size="10"readonly/>     
+            </p>
+        </td>
+        </tr>
+        </table>
+    </div>   
+</form>
+<br>
+</body>
+<footer style="text-align: right"><i>&copy 2019 Don Crawford</i></footer>
+</html>
