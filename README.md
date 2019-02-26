@@ -1,6 +1,6 @@
 # Property Affordability Calculator
 
-## Home/Property affordabilty calculator (South Africa version)
+## South Africa version (Online here: www.BondBuster.org/calculator/za)
 
 When making an offer to purchase a home for price X (bond + cash), the actual amount you have to pay (including transfer costs and bond registration) can come as a nasty surprise.
 
