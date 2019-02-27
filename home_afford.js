@@ -4,6 +4,7 @@ var transferDuties = [];
 var conveyFees = [];
 var doLevies = [];
 
+/* constructor for BaseCost object */
 function BaseCost(base, min, max, percent) {
     this.base = base;
     this.min = min;
@@ -11,6 +12,7 @@ function BaseCost(base, min, max, percent) {
     this.percent = percent;
 }
 
+/* create transfer duty lookup table */
 function initTransferDuties() {
     var count = 0;
     transferDuties[count++] = new BaseCost(0, 0, 900000, 0.0);
@@ -21,6 +23,7 @@ function initTransferDuties() {
     transferDuties[count++] = new BaseCost(933000, 10000001, Infinity, 13.0);
 }
 
+/* create conveyancing fee lookup table */
 function initConveyFees() {
     var count = 0;
     conveyFees[count++] = new BaseCost(12150, 0, 600000, 0.0);
@@ -80,6 +83,7 @@ function initConveyFees() {
     conveyFees[count++] = new BaseCost(3533000, 30000001, Infinity, 0.0);
 }
 
+/* create deeds office fee lookup table */
 function initDeedsOfficeLevies() {
     var count = 0;
     doLevies[count++] = new BaseCost(606,  600000, 0);
@@ -95,6 +99,7 @@ function initDeedsOfficeLevies() {
     doLevies[count++] = new BaseCost(4890, 2000001, Infinity, 0);    
 }
 
+/* find cost for given value in (sorted) lookup table */
 function calculateGradeCost(value, costArray, initFunc) {
     var cost = 0.0
     if (costArray.length == 0) {
@@ -114,15 +119,18 @@ function calculateGradeCost(value, costArray, initFunc) {
     return Math.ceil(cost);
 }
 
+/* calculate transfer duty on given amount */
 function calculateTransferDuty(value) {
     return calculateGradeCost(value, transferDuties, initTransferDuties);
 }
 
+/* calculate transfer duty on given amount */
 function calculateConveyFee(value) {
     return Math.ceil(
         calculateGradeCost(value, conveyFees, initConveyFees) * VAT_rate);
 }
 
+/* calculate transfer duty on given amount */
 function calculateDeedsOfficeLevy(value) {
     return calculateGradeCost(value, doLevies, initDeedsOfficeLevies);
 }
@@ -132,10 +140,12 @@ function calculateBondInitFee(value) {
     return 0;
 }
 
+/* calculate post & petties on given amount */
 function calculatePandP(value) {
     return 1100;
 }
 
+/* get funding amount from form items */
 function getFunding(input) {
     var cash = 0;
     var bond = 0;
@@ -150,6 +160,7 @@ function getFunding(input) {
     return (cash + bond);
 }
 
+/* get transfer costs from form items */
 function getTransferCosts(input) {
     var total = 0;
     var convey = 0;
@@ -173,6 +184,7 @@ function getTransferCosts(input) {
     return total;
 }
 
+/* get bond costs from form items */
 function getBondCosts(input) {
     var total = 0;
     var convey = 0;
@@ -198,6 +210,7 @@ function getBondCosts(input) {
     return total;
 }
 
+/* calculate transfer costs and display in form items */
 function applyTransferCosts(funds, input) {
     var duty = calculateTransferDuty(funds);
     var convey = calculateConveyFee(funds);
@@ -224,6 +237,7 @@ function applyTransferCosts(funds, input) {
     return costs;
 }
 
+/* calculate bond costs and display in form items */
 function applyBondCosts(bondVal, input) {
     var costs = 0;
     if (getNumber(document.formdata.bondAmount.value) == 0) {
@@ -272,6 +286,7 @@ function applyBondCosts(bondVal, input) {
     return costs;
 }
 
+/* Apply button callback */
 function applyButtonCallback() {
     document.formdata.cashAmount.value =
         numberWithCommas(getNumber(document.formdata.cashAmount.value));
@@ -282,6 +297,7 @@ function applyButtonCallback() {
     applyBondCosts(funds, true);
 }
 
+/* calculate maximum bond value such that total cost <= funds */
 function calculateMaxAffordableBond(cash, startVal, funds) {
     var bond = startVal - (startVal%1000) + 1000;  // step 1000
     var maxBond = startVal;
@@ -306,6 +322,7 @@ function calculateMaxAffordableBond(cash, startVal, funds) {
     return Math.floor(maxBond);
 }
 
+/* calculate values and display values in form items */
 function calcValuesCallback(amount) {
     var cash = getNumber(document.formdata.cashAmount.value);
     cash = Math.min(cash, amount);
@@ -327,6 +344,7 @@ function calcValuesCallback(amount) {
     document.formdata.calcTotal.value = numberWithCommas(total);
 }
 
+/* Calculate button callback */
 function calculate() {
     applyButtonCallback();  // apply latest funds values
     var total = 0;
