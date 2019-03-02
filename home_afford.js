@@ -18,7 +18,7 @@ function initTransferDuties() {
     transferDuties[count++] = new BaseCost(0, 0, 900000, 0.0);
     transferDuties[count++] = new BaseCost(0, 900001, 1250000, 3.0);
     transferDuties[count++] = new BaseCost(10500, 1250001, 1750000, 6.0);
-    transferDuties[count++] = new BaseCost(40500, 1750001, 2250000, 8.0);  
+    transferDuties[count++] = new BaseCost(40500, 1750001, 2250000, 8.0);
     transferDuties[count++] = new BaseCost(80500, 2250001, 10000000, 11.0);
     transferDuties[count++] = new BaseCost(933000, 10000001, Infinity, 13.0);
 }
@@ -69,7 +69,7 @@ function initConveyFees() {
     conveyFees[count++] = new BaseCost(44490, 4500001, 4600000, 0.0);
     conveyFees[count++] = new BaseCost(45225, 4600001, 4700000, 0.0);
     conveyFees[count++] = new BaseCost(45960, 4700001, 4800000, 0.0);
-    conveyFees[count++] = new BaseCost(46695, 4800001, 4900000, 0.0);    
+    conveyFees[count++] = new BaseCost(46695, 4800001, 4900000, 0.0);
     conveyFees[count++] = new BaseCost(47430, 4900001, 5000000, 0.0);
     // +370
     conveyFees[count++] = new BaseCost(47800, 5000001, 5100000, 0.0);
@@ -96,7 +96,7 @@ function initDeedsOfficeLevies() {
     doLevies[count++] = new BaseCost(2568, 800001, 10000000, 0);
     doLevies[count++] = new BaseCost(3057, 1000001, 15000000, 0);
     doLevies[count++] = new BaseCost(3671, 1500001, 20000000, 0);
-    doLevies[count++] = new BaseCost(4890, 2000001, Infinity, 0);    
+    doLevies[count++] = new BaseCost(4890, 2000001, Infinity, 0);
 }
 
 /* find cost for given value in (sorted) lookup table */
@@ -168,19 +168,19 @@ function getTransferCosts(input) {
     var doLevy = 0;
 
     if (input) {
-        convey = Math.ceil(getNumber(document.formdata.conveyFee.value) * VAT_rate);
+        convey = Math.ceil(getNumber(document.formdata.conveyFee.value));
         transfer = getNumber(document.formdata.transferDuty.value);
         doLevy = getNumber(document.formdata.doLevy.value);
     } else {
-        convey = Math.ceil(getNumber(document.formdata.calcConveyFee.value) * VAT_rate);
+        convey = Math.ceil(getNumber(document.formdata.calcConveyFee.value));
         transfer = getNumber(document.formdata.calcTransferDuty.value);
         doLevy = getNumber(document.formdata.calcDoLevy.value);
     }
-    
+
     var petties = getNumber(document.formdata.transferPetties.value);
-    
+
     total = convey + transfer + doLevy + petties;
-    
+
     return total;
 }
 
@@ -192,12 +192,12 @@ function getBondCosts(input) {
     var initFee = 0;
     if (input) {
         if (getNumber(document.formdata.bondAmount.value) > 0) {
-            convey = getNumber(document.formdata.bondConveyFee.value) * VAT_rate;
+            convey = getNumber(document.formdata.bondConveyFee.value);
             doFee = getNumber(document.formdata.doBondFee.value);
         }
     } else {
         if (getNumber(document.formdata.calcBondAmount.value) > 0) {
-            convey = getNumber(document.formdata.calcBondConveyFee.value) * VAT_rate;
+            convey = getNumber(document.formdata.calcBondConveyFee.value);
             doFee = getNumber(document.formdata.calcDoBondFee.value);
         }
     }
@@ -205,7 +205,7 @@ function getBondCosts(input) {
     // use manual entries verbatim from input
     var initFee = getNumber(document.formdata.initBondFee.value);
     var petties = getNumber(document.formdata.bondPetties.value);
-        
+
     total = convey + doFee + initFee + petties;
     return total;
 }
@@ -219,9 +219,9 @@ function applyTransferCosts(funds, input) {
     if (convey > 0 && petties == 0) {
         petties = calculatePandP(funds);
     }
-    
+
     var costs = duty + convey + levy + petties;
-    
+
     if (input) {
         document.formdata.transferDuty.value = numberWithCommas(duty);
         document.formdata.conveyFee.value = numberWithCommas(convey);
@@ -233,7 +233,7 @@ function applyTransferCosts(funds, input) {
         document.formdata.calcDoLevy.value = numberWithCommas(levy);
         document.formdata.calcTransferPetties.value = numberWithCommas(petties);
     }
-    
+
     return costs;
 }
 
@@ -242,17 +242,17 @@ function applyBondCosts(bondVal, input) {
     var costs = 0;
     if (getNumber(document.formdata.bondAmount.value) == 0) {
         document.formdata.bondConveyFee.value =
-            document.formdata.doBondFee.value = 
+            document.formdata.doBondFee.value =
             document.formdata.initBondFee.value =
             document.formdata.bondPetties.value = "0.00";
         document.formdata.calcBondAmount.value = "0.00";
         document.formdata.calcBondConveyFee.value =
-            document.formdata.calcDoBondFee.value = 
+            document.formdata.calcDoBondFee.value =
             document.formdata.calcInitBondFee.value =
             document.formdata.calcBondPetties.value = "0.00";
         return 0;
     }
-    
+
     var convey = 0;
     var duty = 0;
 
@@ -262,9 +262,9 @@ function applyBondCosts(bondVal, input) {
     if (petties == 0) {
         petties = calculatePandP(bondVal);
     }
-    
+
     if (input) {
-        //bondVal = getNumber(document.formdata.bondAmount.value);
+        bondVal = getNumber(document.formdata.bondAmount.value);
         convey = calculateConveyFee(bondVal);
         document.formdata.bondConveyFee.value = numberWithCommas(convey);
         duty = calculateDeedsOfficeLevy(bondVal);
@@ -272,7 +272,7 @@ function applyBondCosts(bondVal, input) {
         document.formdata.initBondFee.value = numberWithCommas(initFee);
         document.formdata.bondPetties.value = numberWithCommas(petties);
     } else {
-        //bondVal = getNumber(document.formdata.calcBondAmount.value);
+        bondVal = getNumber(document.formdata.calcBondAmount.value);
         convey = calculateConveyFee(bondVal);
         document.formdata.calcBondConveyFee.value = numberWithCommas(convey);
         duty = calculateDeedsOfficeLevy(bondVal);
@@ -282,7 +282,7 @@ function applyBondCosts(bondVal, input) {
     }
 
     costs = convey + duty + initFee + petties;
-    
+
     return costs;
 }
 
@@ -305,7 +305,7 @@ function calculateMaxAffordableBond(cash, startVal, funds) {
     var initFee = getNumber(document.formdata.initBondFee.value);
     var petties = getNumber(document.formdata.transferPetties.value) +
                     getNumber(document.formdata.bondPetties.value);
-    
+
     while (total < funds) {
         var value = cash + bond;
         var convey = calculateConveyFee(value) + calculateConveyFee(bond);
@@ -328,12 +328,12 @@ function calcValuesCallback(amount) {
     cash = Math.min(cash, amount);
     document.formdata.calcCashAmount.value = numberWithCommas(cash);
     var bond = Math.max(amount - cash, 0);
-    
+
     bond = calculateMaxAffordableBond(cash, bond, getFunding(true));
     //alert("Max value: " + bond2);
-    
+
     document.formdata.calcOfferAmount.value = numberWithCommas(cash + bond);
-    
+
     document.formdata.calcBondAmount.value = numberWithCommas(bond);
     var funds = getFunding(false);
     var bondCosts = applyBondCosts(bond, false);
