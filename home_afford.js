@@ -330,14 +330,12 @@ function calcValuesCallback(amount) {
     var bond = Math.max(amount - cash, 0);
 
     bond = calculateMaxAffordableBond(cash, bond, getFunding(true));
-    //alert("Max value: " + bond2);
 
     document.formdata.calcOfferAmount.value = numberWithCommas(cash + bond);
 
     document.formdata.calcBondAmount.value = numberWithCommas(bond);
     var funds = getFunding(false);
     var bondCosts = applyBondCosts(bond, false);
-    //alert("using bond costs: " + costs);
     var transferCosts = applyTransferCosts(funds, false);
     var total = funds + bondCosts + transferCosts;
     total = Math.ceil(total);
@@ -357,7 +355,6 @@ function calculate() {
     var costs = getTransferCosts(true) + getBondCosts(true);
     funds -= costs;
     total += costs;
-    //total = total.toFixed(2);
     funds = Math.ceil(Math.max(funds, 0));
     total = Math.ceil(Math.max(total, 0));
     document.formdata.total.value = numberWithCommas(total);
