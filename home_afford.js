@@ -136,8 +136,7 @@ function calculateDeedsOfficeLevy(value) {
 }
 
 function calculateBondInitFee(value) {
-    // TODO
-    return 0;
+    return 6037;
 }
 
 /* calculate post & petties on given amount */
@@ -216,7 +215,8 @@ function applyTransferCosts(funds, input) {
     var convey = calculateConveyFee(funds);
     var levy = calculateDeedsOfficeLevy(funds);
     var petties = getNumber(document.formdata.transferPetties.value);
-    if (convey > 0 && petties == 0) {
+    if (convey > 0 && input) {
+        // reset to default
         petties = calculatePandP(funds);
     }
 
@@ -258,12 +258,18 @@ function applyBondCosts(bondVal, input) {
 
     // --- manually entered values used verbatim for both sides  ---
     var initFee = getNumber(document.formdata.initBondFee.value);
+    if (input) {
+        // reset to default
+        initFee = calculateBondInitFee(bondVal);
+    }
     var petties = getNumber(document.formdata.bondPetties.value);
-    if (petties == 0) {
+    if (input) {
+        // reset to default
         petties = calculatePandP(bondVal);
     }
 
     if (input) {
+    // use values from affordabilty section
         bondVal = getNumber(document.formdata.bondAmount.value);
         convey = calculateConveyFee(bondVal);
         document.formdata.bondConveyFee.value = numberWithCommas(convey);
@@ -272,6 +278,7 @@ function applyBondCosts(bondVal, input) {
         document.formdata.initBondFee.value = numberWithCommas(initFee);
         document.formdata.bondPetties.value = numberWithCommas(petties);
     } else {
+    // use values from calculated section
         bondVal = getNumber(document.formdata.calcBondAmount.value);
         convey = calculateConveyFee(bondVal);
         document.formdata.calcBondConveyFee.value = numberWithCommas(convey);
@@ -344,7 +351,7 @@ function calcValuesCallback(amount) {
 
 /* Calculate button callback */
 function calculate() {
-    applyButtonCallback();  // apply latest funds values
+    //applyButtonCallback();  // apply latest funds values
     var total = 0;
     var funds = getFunding(true);
     if (funds <= 0) {
