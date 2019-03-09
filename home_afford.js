@@ -286,8 +286,16 @@ function applyBondCosts(bondVal, input) {
     return costs;
 }
 
+/*
+function resetButtonCallback() {
+  document.formdata.calcCashAmount.style.backgroundColor = "lightgray";
+}
+*/
+
 /* Apply button callback */
 function applyButtonCallback() {
+    //document.formdata.calcCashAmount.style.backgroundColor = "lightgray";
+
     document.formdata.cashAmount.value =
         numberWithCommas(getNumber(document.formdata.cashAmount.value));
     document.formdata.bondAmount.value =
@@ -322,8 +330,36 @@ function calculateMaxAffordableBond(cash, startVal, funds) {
     return Math.floor(maxBond);
 }
 
+function calcValuesCallback(total, funds) {
+    var bond = getNumber(document.formdata.bondAmount.value);
+    var costs = getTransferCosts(true) + getBondCosts(true);
+    var cash = getNumber(document.formdata.cashAmount.value);
+    if (funds < total) {
+      var delta = cash - costs;
+      if (delta >= 0) {
+        cash = delta;
+        document.formdata.calcCashAmount.style.backgroundColor = "lightgray";
+      } else {
+        alert("Cash shortfall of: " + numberWithCommas(delta * -1));
+        cash = delta;
+        document.formdata.calcCashAmount.style.backgroundColor = "orange";
+      }
+    }
+    document.formdata.calcCashAmount.value = numberWithCommas(cash);
+    document.formdata.calcOfferAmount.value = numberWithCommas(cash + bond);
+
+    document.formdata.calcBondAmount.value = numberWithCommas(bond);
+    var funds = getFunding(false);
+    var bondCosts = applyBondCosts(bond, false);
+    //alert("using bond costs: " + costs);
+    var transferCosts = applyTransferCosts(funds, false);
+    var total = funds + bondCosts + transferCosts;
+    total = Math.ceil(total);
+    document.formdata.calcTotal.value = numberWithCommas(total);
+}
+
 /* calculate values and display values in form items */
-function calcValuesCallback(amount) {
+function xxcalcValuesCallback(amount) {
     var cash = getNumber(document.formdata.cashAmount.value);
     cash = Math.min(cash, amount);
     document.formdata.calcCashAmount.value = numberWithCommas(cash);
@@ -361,7 +397,8 @@ function calculate() {
     funds = Math.ceil(Math.max(funds, 0));
     total = Math.ceil(Math.max(total, 0));
     document.formdata.total.value = numberWithCommas(total);
-    calcValuesCallback(funds);
+    //calcValuesCallback(funds);
+    calcValuesCallback(total, funds);
     //alert("You can afford: " + numberWithCommas(funds));
     return funds;
 }
