@@ -115,6 +115,10 @@
             </p>
             <p><label for="petties">Post &amp Petties</label>
                 <input type="text" name="transferPetties" placeholder="0.00" size="10"/>            
+            </p>
+            <hr>
+            <p><label for="total">Total (incl VAT)</label>
+                <input type="text" id="pink" name="transferTotal" placeholder="0.00" size="10"readonly/>     
             </p>            
         </td>
 
@@ -127,10 +131,14 @@
             </p>            
             <p><label for="bond_init">Bond Initiation Fee</label>
                 <input type="text" id="bond_init" name="initBondFee" placeholder="0.00" size="10"/>
-                <label>(specify amount)</label>
+                <label>(specify)</label>
             </p>
             <p><label for="petties">Post &amp Petties</label>
                 <input type="text" name="bondPetties" placeholder="0.00" size="10"/>            
+            </p>
+            <hr>
+            <p><label for="total">Total (incl VAT)</label>
+                <input type="text" id="pink" name="bondTotal" placeholder="0.00" size="10"readonly/>     
             </p>            
         </td>
         <td>
@@ -180,6 +188,10 @@
             </p>
             <p><label for="petties">Post &amp Petties</label>
                 <input type="text" id="grey" name="calcTransferPetties" placeholder="0.00" size="10" readonly/>            
+            </p>
+            <hr>
+            <p><label for="total">Total (incl VAT)</label>
+                <input type="text" id="grey" name="calcTransferTotal" placeholder="0.00" size="10"readonly/>     
             </p>            
         </td>
         <td>
@@ -194,12 +206,19 @@
             </p>
             <p><label for="petties">Post &amp Petties</label>
                 <input type="text" id="grey" name="calcBondPetties" placeholder="0.00" size="10" readonly/>            
+            </p>
+            <hr>
+            <p><label for="total">Total (incl VAT)</label>
+                <input type="text" id="grey" name="calcBondTotal" placeholder="0.00" size="10"readonly/>     
             </p>            
         </td>
         <td>
             <p><label for="calc_total">Total amount (incl VAT)</label>
                 <input id="yellow" type="text" name="calcTotal" placeholder="0.00" size="10"readonly/>     
             </p>
+            <p><label for="calc_total">Difference from Available</label>
+                <input id="grey" type="text" name="calcDelta" placeholder="0.00" size="10"readonly/>     
+            </p>            
         </td>
         </tr>
         </table>

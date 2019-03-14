@@ -215,7 +215,7 @@ function applyTransferCosts(funds, input) {
     var convey = calculateConveyFee(funds);
     var levy = calculateDeedsOfficeLevy(funds);
     var petties = getNumber(document.formdata.transferPetties.value);
-    if (convey > 0 && input) {
+    if (petties == 0 && convey > 0 && input) {
         // reset to default
         petties = calculatePandP(funds);
     }
@@ -227,11 +227,13 @@ function applyTransferCosts(funds, input) {
         document.formdata.conveyFee.value = numberWithCommas(convey);
         document.formdata.doLevy.value = numberWithCommas(levy);
         document.formdata.transferPetties.value = numberWithCommas(petties);
+        document.formdata.transferTotal.value = numberWithCommas(costs);
     } else {
         document.formdata.calcTransferDuty.value = numberWithCommas(duty);
         document.formdata.calcConveyFee.value = numberWithCommas(convey);
         document.formdata.calcDoLevy.value = numberWithCommas(levy);
         document.formdata.calcTransferPetties.value = numberWithCommas(petties);
+        document.formdata.calcTransferTotal.value = numberWithCommas(costs);
     }
 
     return costs;
@@ -263,7 +265,7 @@ function applyBondCosts(bondVal, input) {
         initFee = calculateBondInitFee(bondVal);
     }
     var petties = getNumber(document.formdata.bondPetties.value);
-    if (input) {
+    if (petties == 0 && input) {
         // reset to default
         petties = calculatePandP(bondVal);
     }
@@ -289,6 +291,12 @@ function applyBondCosts(bondVal, input) {
     }
 
     costs = convey + duty + initFee + petties;
+    
+    if (input) {
+        document.formdata.bondTotal.value = numberWithCommas(costs);
+    } else {
+        document.formdata.calcBondTotal.value = numberWithCommas(costs);
+    }
 
     return costs;
 }
@@ -338,11 +346,11 @@ function calculateMaxAffordableBond(cash, startVal, funds) {
 
 /* calculate values and display values in form items
    cash amount will be reduced if possible so total falls within available funds */
-function calcValuesCallbackCashReduce(total, funds) {
+function calcValuesCallbackCashReduce(total, amount) {
     var bond = getNumber(document.formdata.bondAmount.value);
     var costs = getTransferCosts(true) + getBondCosts(true);
     var cash = getNumber(document.formdata.cashAmount.value);
-    if (funds < total) {
+    if (amount < total) {
       var delta = cash - costs;
       if (delta >= 0) {
         cash = delta;
@@ -364,6 +372,7 @@ function calcValuesCallbackCashReduce(total, funds) {
     var total = funds + bondCosts + transferCosts;
     total = Math.ceil(total);
     document.formdata.calcTotal.value = numberWithCommas(total);
+    document.formdata.calcDelta.value = numberWithCommas(getFunding(true) - total);
 }
 
 /* calculate values and display values in form items
@@ -385,6 +394,7 @@ function calcValuesCallbackBondReduce(amount) {
     var total = funds + bondCosts + transferCosts;
     total = Math.ceil(total);
     document.formdata.calcTotal.value = numberWithCommas(total);
+    document.formdata.calcDelta.value = numberWithCommas(getFunding(true) - total);
 }
 
 /* Calculate button callback */
