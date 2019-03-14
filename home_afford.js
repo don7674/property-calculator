@@ -124,22 +124,23 @@ function calculateTransferDuty(value) {
     return calculateGradeCost(value, transferDuties, initTransferDuties);
 }
 
-/* calculate transfer duty on given amount */
+/* calculate conveyancing fees on given amount */
 function calculateConveyFee(value) {
     return Math.ceil(
         calculateGradeCost(value, conveyFees, initConveyFees) * VAT_rate);
 }
 
-/* calculate transfer duty on given amount */
+/* calculate deeds offics levy on given amount */
 function calculateDeedsOfficeLevy(value) {
     return calculateGradeCost(value, doLevies, initDeedsOfficeLevies);
 }
 
+/* return default bond initiation fees on given amount */
 function calculateBondInitFee(value) {
     return 6037;
 }
 
-/* calculate post & petties on given amount */
+/* returnd default post & petties on given amount */
 function calculatePandP(value) {
     return 1100;
 }
